@@ -1,15 +1,16 @@
 <?php
-$jiris = [
-    ['id' => '1', 'name' => 'Projets Web 2025', 'date' => ''],
-    ['id' => '2', 'name' => 'Design Web 2024', 'date' => ''],
-    ['id' => '3', 'name' => 'Projets Web 2024', 'date' => ''],
-    ['id' => '4', 'name' => 'Design Web 2023', 'date' => ''],
-];
-//Filtrages des Jiris globaux en fonction de la date
-$upcoming_jiris = [$jiris[0], $jiris[1],];
-$passed_jiris = [$jiris[2], $jiris[3]];
+define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
+if (file_exists(ROOT_PATH . '/database/database.php')) {
+    require ROOT_PATH . '/database/database.php';
+} else {
+    die('Il y a un problème avec la connexion de base de données.');
+}
+$db = getPDO();
+$statement = $db->query('SELECT * FROM jiris WHERE starting_at > current_timestamp;');
+$upcoming_jiris = $statement->fetchAll();
+$statement = $db->query('SELECT * FROM jiris WHERE starting_at < current_timestamp;');
+$passed_jiris = $statement->fetchAll();
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +30,7 @@ $passed_jiris = [$jiris[2], $jiris[3]];
             <?php if (count($upcoming_jiris) > 0): ?>
                 <ol>
                     <?php foreach ($upcoming_jiris as $jiri): ?>
-                        <li><a class="text-blue-500 underline" href="/jiris/<?= $jiri['id'] ?>"><?= $jiri['name'] ?></a>
+                        <li><a class="text-blue-500 underline" href="/jiris/<?= $jiri->id ?>"><?= $jiri->name ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ol>
@@ -42,7 +43,7 @@ $passed_jiris = [$jiris[2], $jiris[3]];
             <?php if (count($passed_jiris) > 0): ?>
                 <ol>
                     <?php foreach ($passed_jiris as $jiri): ?>
-                        <li><a class="text-blue-500 underline" href="/jiris/<?= $jiri['id'] ?>"><?= $jiri['name'] ?></a>
+                        <li><a class="text-blue-500 underline" href="/jiris/<?= $jiri->id ?>"><?= $jiri->name ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ol>
