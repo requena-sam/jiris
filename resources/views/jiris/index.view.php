@@ -1,18 +1,9 @@
 <?php
-define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT']);
-if (file_exists(ROOT_PATH . '/database/database.php')) {
-    require ROOT_PATH . '/database/database.php';
-} else {
-    die('Il y a un problème avec la connexion de base de données.');
-}
-$db = getPDO();
-$statement = $db->query('SELECT * FROM jiris WHERE starting_at > current_timestamp;');
-$upcoming_jiris = $statement->fetchAll();
-$statement = $db->query('SELECT * FROM jiris WHERE starting_at < current_timestamp;');
-$passed_jiris = $statement->fetchAll();
+/** @var array $upcoming_jiris*/
+/** @var array $passed_jiris*/
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"

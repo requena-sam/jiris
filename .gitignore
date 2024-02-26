@@ -1,2 +1,4 @@
 /.env.local.ini
 .idea
+
+/vendor/
